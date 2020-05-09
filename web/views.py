@@ -11,6 +11,25 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from . import serializers
 
+class allPost(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        try:
+            all_post_temp = Post.objects.all()
+            data = []
+
+            for items in all_post_temp:
+                data.append({
+                    'id':items.id,
+                    'title':items.title,
+                    'user':items.user.username,
+                    'content':items.content,
+                })
+
+            return Response({'data':data})
+        except:
+            return Response({'status':'Error'})
 
 
 class HelloView(APIView):
