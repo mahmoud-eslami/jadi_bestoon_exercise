@@ -11,6 +11,27 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from . import serializers
 
+class post_byTitle(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        try:
+            searched_title = request.data['title']
+            all_post_temp = Post.objects.all().filter(title = searched_title)
+
+            data = []
+
+            for items in all_post_temp:
+                data.append({
+                    'id':items.id,
+                    'title':items.title,
+                    'user':items.user.username,
+                    'content':items.content,
+                })
+            return Response({'data':data})
+        except:
+            return Response({'status':'Error'})
+
 class allPost(APIView):
     permission_classes = (IsAuthenticated,)
 
