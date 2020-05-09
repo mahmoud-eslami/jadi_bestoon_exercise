@@ -4,15 +4,15 @@ from django.contrib.auth.models import  User
 
 class Userprofile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    avatar = models.ImageField(upload_to='uploads/')
+    avatar = models.ImageField(upload_to='uploads/',blank=True)
     uuid = models.UUIDField(primary_key=True,editable=False,default=uuid.uuid4)
 
-    man_sex = 'mn'
-    woman_sex = 'wn'
+    man_sex = '1'
+    woman_sex = '0'
 
     sex_choices = [
-    (man_sex,'man'),
-    (woman_sex,'woman'),
+    (man_sex,'man'), # man is 1
+    (woman_sex,'woman'), # woman is 0
     ]
     sex = models.CharField(max_length=2,choices=sex_choices,default=man_sex)
 

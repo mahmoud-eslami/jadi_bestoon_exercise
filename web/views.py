@@ -9,6 +9,7 @@ from rest_framework import  status
 from rest_framework.views import  APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from . import serializers
 
 
 
@@ -38,3 +39,36 @@ class AllUserProfile(APIView):
             return Response({'data' : data},status=status.HTTP_200_OK)
         except:
             return Response({'data': 'ERROR'})
+
+class RegisterUser(APIView):
+
+    def post(self, request):
+    #    try:
+            serialized_data = serializers.RegisterUserSerializers(data=request.data)
+
+        #    if serialized_data.is_valid():
+        #        username = serializer.data.get('username')
+        #        password = serializer.data.get('password')
+        #        sex = serializer.data.get('sex')
+        #    else:
+        #        return Response({'status' : 'Bad Req'})
+
+            username = request.data['username']
+            password = request.data['password']
+            sex = request.data['sex']
+
+            new_user = User()
+            new_user.username = username
+            new_user.set_password(password)
+            new_user.save()
+
+            profile_user = Userprofile()
+            profile_user.user = new_user
+            profile_user.sex = sex
+            profile_user.save()
+
+            return Response({'data' : 'user created successful'},status=status.HTTP_200_OK)
+
+    #    except:
+
+        #    return Response({'data': 'ERROR'})
